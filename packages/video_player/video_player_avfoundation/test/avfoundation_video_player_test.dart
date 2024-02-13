@@ -23,6 +23,10 @@ class _ApiLogger implements TestHostVideoPlayerApi {
   VolumeMessage? volumeMessage;
   PlaybackSpeedMessage? playbackSpeedMessage;
   MixWithOthersMessage? mixWithOthersMessage;
+  SetEmbeddedSubtitlesMessage? setEmbeddedSubtitlesMessage;
+  EnterPictureInPictureMessage? enterPictureInPictureMessage;
+  SetStartPictureInPictureAutomaticallyMessage?
+      setStartPictureInPictureAutomaticallyMessage;
 
   @override
   TextureMessage create(CreateMessage arg) {
@@ -89,6 +93,40 @@ class _ApiLogger implements TestHostVideoPlayerApi {
   void setPlaybackSpeed(PlaybackSpeedMessage arg) {
     log.add('setPlaybackSpeed');
     playbackSpeedMessage = arg;
+  }
+
+  @override
+  List<GetEmbeddedSubtitlesMessage?> getEmbeddedSubtitles(TextureMessage msg) {
+    log.add('getEmbeddedSubtitles');
+    textureMessage = msg;
+    return <GetEmbeddedSubtitlesMessage?>[
+      GetEmbeddedSubtitlesMessage(
+        language: 'en',
+        label: 'English',
+        trackIndex: 0,
+        groupIndex: 0,
+        renderIndex: 2,
+      )
+    ];
+  }
+
+  @override
+  void setEmbeddedSubtitles(SetEmbeddedSubtitlesMessage msg) {
+    log.add('setEmbeddedSubtitles');
+    setEmbeddedSubtitlesMessage = msg;
+  }
+
+  @override
+  void enterPictureInPicture(EnterPictureInPictureMessage arg) {
+    log.add('enterPictureInPicture');
+    enterPictureInPictureMessage = arg;
+  }
+
+  @override
+  void setStartPictureInPictureAutomatically(
+      SetStartPictureInPictureAutomaticallyMessage arg) {
+    log.add('setStartPictureInPictureAutomatically');
+    setStartPictureInPictureAutomaticallyMessage = arg;
   }
 }
 
@@ -331,6 +369,58 @@ void main() {
             VideoEvent(eventType: VideoEventType.bufferingStart),
             VideoEvent(eventType: VideoEventType.bufferingEnd),
           ]));
+    });
+
+    test('getEmbeddedSubtitles', () async {
+      final List<EmbeddedSubtitle> subtitles =
+          await player.getEmbeddedSubtitles(1);
+      expect(log.log.last, 'getEmbeddedSubtitles');
+      expect(log.textureMessage?.textureId, 1);
+      expect(subtitles.length, 1);
+      expect(subtitles.first.language, 'en');
+      expect(subtitles.first.label, 'English');
+      expect(subtitles.first.trackIndex, 0);
+      expect(subtitles.first.groupIndex, 0);
+      expect(subtitles.first.renderIndex, 2);
+    });
+
+    test('setEmbeddedSubtitles', () async {
+      const EmbeddedSubtitle embeddedSubtitle = EmbeddedSubtitle(
+        language: 'en',
+        label: 'English',
+        trackIndex: 0,
+        groupIndex: 0,
+        renderIndex: 2,
+      );
+      await player.setEmbeddedSubtitles(1, embeddedSubtitle);
+      expect(log.log.last, 'setEmbeddedSubtitles');
+      expect(log.setEmbeddedSubtitlesMessage?.textureId, 1);
+      expect(log.setEmbeddedSubtitlesMessage?.language, 'en');
+      expect(log.setEmbeddedSubtitlesMessage?.label, 'English');
+      expect(log.setEmbeddedSubtitlesMessage?.trackIndex, 0);
+      expect(log.setEmbeddedSubtitlesMessage?.groupIndex, 0);
+      expect(log.setEmbeddedSubtitlesMessage?.renderIndex, 2);
+    });
+
+    test('enterPictureInPictureMessage', () async {
+      await player.enterPictureInPicture(
+          1, const Rect.fromLTWH(0, 0, 100, 200));
+      expect(log.log.last, 'enterPictureInPicture');
+      expect(log.enterPictureInPictureMessage?.textureId, 1);
+      expect(log.enterPictureInPictureMessage?.width, 100);
+      expect(log.enterPictureInPictureMessage?.height, 200);
+    });
+
+    test('setStartPictureInPictureAutomatically', () async {
+      await player.setStartPictureInPictureAutomatically(
+        1,
+        true,
+        const Rect.fromLTWH(0, 0, 100, 200),
+      );
+      expect(log.log.last, 'setStartPictureInPictureAutomatically');
+      expect(log.setStartPictureInPictureAutomaticallyMessage?.textureId, 1);
+      expect(log.setStartPictureInPictureAutomaticallyMessage?.width, 100);
+      expect(log.setStartPictureInPictureAutomaticallyMessage?.height, 200);
     });
   });
 }

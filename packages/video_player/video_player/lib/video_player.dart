@@ -14,7 +14,12 @@ import 'package:video_player_platform_interface/video_player_platform_interface.
 import 'src/closed_caption_file.dart';
 
 export 'package:video_player_platform_interface/video_player_platform_interface.dart'
-    show DurationRange, DataSourceType, VideoFormat, VideoPlayerOptions;
+    show
+        DurationRange,
+        DataSourceType,
+        VideoFormat,
+        VideoPlayerOptions,
+        EmbeddedSubtitle;
 
 export 'src/closed_caption_file.dart';
 
@@ -51,6 +56,9 @@ class VideoPlayerValue {
     this.playbackSpeed = 1.0,
     this.rotationCorrection = 0,
     this.errorDescription,
+    this.embeddedSubtitle = const EmbeddedSubtitle.none(),
+    this.isPictureInPictureEnabled = false,
+    this.externalPlaybackActive = false,
   });
 
   /// Returns an instance for a video that hasn't been loaded.
@@ -119,6 +127,16 @@ class VideoPlayerValue {
   /// Indicates whether or not the video has been loaded and is ready to play.
   final bool isInitialized;
 
+  /// The currently selected embedded subtitle from the available subtitles of the video
+  final EmbeddedSubtitle embeddedSubtitle;
+
+  /// Indicates whether the video is playing in picture in picture or not.
+  final bool isPictureInPictureEnabled;
+
+  /// A Boolean value that indicates whether the player is currently playing video in external playback mode.
+  /// Only available for iOS
+  final bool externalPlaybackActive;
+
   /// Indicates whether or not the video is in an error state. If this is true
   /// [errorDescription] should have information about the problem.
   bool get hasError => errorDescription != null;
@@ -157,6 +175,9 @@ class VideoPlayerValue {
     double? playbackSpeed,
     int? rotationCorrection,
     String? errorDescription = _defaultErrorDescription,
+    EmbeddedSubtitle? embeddedSubtitle,
+    bool? isPictureInPictureEnabled,
+    bool? externalPlaybackActive,
   }) {
     return VideoPlayerValue(
       duration: duration ?? this.duration,
@@ -172,9 +193,14 @@ class VideoPlayerValue {
       volume: volume ?? this.volume,
       playbackSpeed: playbackSpeed ?? this.playbackSpeed,
       rotationCorrection: rotationCorrection ?? this.rotationCorrection,
+      embeddedSubtitle: embeddedSubtitle ?? this.embeddedSubtitle,
+      isPictureInPictureEnabled:
+          isPictureInPictureEnabled ?? this.isPictureInPictureEnabled,
       errorDescription: errorDescription != _defaultErrorDescription
           ? errorDescription
           : this.errorDescription,
+      externalPlaybackActive:
+          externalPlaybackActive ?? this.externalPlaybackActive,
     );
   }
 
@@ -193,6 +219,7 @@ class VideoPlayerValue {
         'isBuffering: $isBuffering, '
         'volume: $volume, '
         'playbackSpeed: $playbackSpeed, '
+        'externalPlaybackActive: $externalPlaybackActive, '
         'errorDescription: $errorDescription)';
   }
 }
@@ -399,7 +426,24 @@ class VideoPlayerController extends ValueNotifier<VideoPlayerValue> {
         case VideoEventType.bufferingEnd:
           value = value.copyWith(isBuffering: false);
           break;
+        case VideoEventType.subtitleUpdate:
+          value = value.copyWith(
+            caption:
+                Caption.fromEmbeddedSubtitle(text: event.bufferedData ?? ''),
+          );
+          break;
         case VideoEventType.unknown:
+          break;
+        case VideoEventType.externalPlaybackActive:
+          value = value.copyWith(
+            externalPlaybackActive: event.bufferedData == 'true',
+          );
+          break;
+        case VideoEventType.isPictureInPictureEnabled:
+          final bool isEnabled = event.bufferedData == 'true';
+          if (value.isPictureInPictureEnabled != isEnabled) {
+            value = value.copyWith(isPictureInPictureEnabled: isEnabled);
+          }
           break;
       }
     }
@@ -621,7 +665,33 @@ class VideoPlayerController extends ValueNotifier<VideoPlayerValue> {
     );
   }
 
+  /// Get all available embedded subtitles of the video.
+  ///
+  /// This is useful for video formats containing embedded subtitles like Hls.
+  /// The response items can be used with [setEmbeddedSubtitles] to select and prepare a subtitle.
+  Future<List<EmbeddedSubtitle>> getEmbeddedSubtitles() async {
+    return _videoPlayerPlatform.getEmbeddedSubtitles(_textureId);
+  }
+
+  /// Select one of the embedded subtitles of the video.
+  ///
+  /// * It's recommended to get the [EmbeddedSubtitle] instance from [getEmbeddedSubtitles].
+  /// * After setting a subtitle, the [value.caption] will get updated by the subtitle stream.
+  ///   The updated caption will only include [value.caption.text].
+  /// * Use [EmbeddedSubtitle.none] to prevent [value.caption] from being updated
+  ///   and to remove the subtitle
+  Future<void> setEmbeddedSubtitles(EmbeddedSubtitle embeddedSubtitle) async {
+    await _videoPlayerPlatform.setEmbeddedSubtitles(
+      _textureId,
+      embeddedSubtitle,
+    );
+    value = value.copyWith(embeddedSubtitle: embeddedSubtitle);
+  }
+
   /// The closed caption based on the current [position] in the video.
+  ///
+  /// If an embedded subtitle is selected, this will return a caption for all
+  /// [position].
   ///
   /// If there are no closed captions at the current [position], this will
   /// return an empty [Caption].
@@ -629,6 +699,9 @@ class VideoPlayerController extends ValueNotifier<VideoPlayerValue> {
   /// If no [closedCaptionFile] was specified, this will always return an empty
   /// [Caption].
   Caption _getCaptionAt(Duration position) {
+    if (value.embeddedSubtitle.embeddedSubtitleSelected) {
+      return value.caption;
+    }
     if (_closedCaptionFile == null) {
       return Caption.none;
     }
@@ -657,6 +730,25 @@ class VideoPlayerController extends ValueNotifier<VideoPlayerValue> {
   ) async {
     await _updateClosedCaptionWithFuture(closedCaptionFile);
     _closedCaptionFileFuture = closedCaptionFile;
+  }
+
+  /// Sends a request to native to enter in picture in picture mode.
+  Future<void> enterPictureInPicture(Rect rect) async {
+    await _videoPlayerPlatform.enterPictureInPicture(_textureId, rect);
+  }
+
+  /// An iOS Specific method to enable AVPlayer to go picture in picture mode
+  /// when app moves background.
+  ///
+  /// * This is by default is false
+  /// * Use [Rect.zero] for case that you are disabling this.
+  Future<void> setStartPictureInPictureAutomatically(
+      bool isEnabled, Rect rect) async {
+    await _videoPlayerPlatform.setStartPictureInPictureAutomatically(
+      _textureId,
+      isEnabled,
+      rect,
+    );
   }
 
   Future<void> _updateClosedCaptionWithFuture(

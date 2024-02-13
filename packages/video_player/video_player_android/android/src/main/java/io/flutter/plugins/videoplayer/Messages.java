@@ -15,9 +15,11 @@ import io.flutter.plugin.common.MessageCodec;
 import io.flutter.plugin.common.StandardMessageCodec;
 import java.io.ByteArrayOutputStream;
 import java.nio.ByteBuffer;
+import java.util.Arrays;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.HashMap;
 
 /** Generated class from Pigeon. */
 @SuppressWarnings({"unused", "unchecked", "CodeBlock2Expr", "RedundantSuppression"})
@@ -557,70 +559,392 @@ public class Messages {
     }
   }
 
+  /** Generated class from Pigeon that represents data sent in messages. */
+  public static class GetEmbeddedSubtitlesMessage {
+    private @NonNull String language;
+    public @NonNull String getLanguage() { return language; }
+    public void setLanguage(@NonNull String setterArg) {
+      if (setterArg == null) {
+        throw new IllegalStateException("Nonnull field \"language\" is null.");
+      }
+      this.language = setterArg;
+    }
+
+    private @NonNull String label;
+    public @NonNull String getLabel() { return label; }
+    public void setLabel(@NonNull String setterArg) {
+      if (setterArg == null) {
+        throw new IllegalStateException("Nonnull field \"label\" is null.");
+      }
+      this.label = setterArg;
+    }
+
+    private @NonNull Long trackIndex;
+    public @NonNull Long getTrackIndex() { return trackIndex; }
+    public void setTrackIndex(@NonNull Long setterArg) {
+      if (setterArg == null) {
+        throw new IllegalStateException("Nonnull field \"trackIndex\" is null.");
+      }
+      this.trackIndex = setterArg;
+    }
+
+    private @NonNull Long groupIndex;
+    public @NonNull Long getGroupIndex() { return groupIndex; }
+    public void setGroupIndex(@NonNull Long setterArg) {
+      if (setterArg == null) {
+        throw new IllegalStateException("Nonnull field \"groupIndex\" is null.");
+      }
+      this.groupIndex = setterArg;
+    }
+
+    private @NonNull Long renderIndex;
+    public @NonNull Long getRenderIndex() { return renderIndex; }
+    public void setRenderIndex(@NonNull Long setterArg) {
+      if (setterArg == null) {
+        throw new IllegalStateException("Nonnull field \"renderIndex\" is null.");
+      }
+      this.renderIndex = setterArg;
+    }
+
+    /** Constructor is private to enforce null safety; use Builder. */
+    private GetEmbeddedSubtitlesMessage() {}
+    public static class Builder {
+      private @Nullable String language;
+      public @NonNull Builder setLanguage(@NonNull String setterArg) {
+        this.language = setterArg;
+        return this;
+      }
+      private @Nullable String label;
+      public @NonNull Builder setLabel(@NonNull String setterArg) {
+        this.label = setterArg;
+        return this;
+      }
+      private @Nullable Long trackIndex;
+      public @NonNull Builder setTrackIndex(@NonNull Long setterArg) {
+        this.trackIndex = setterArg;
+        return this;
+      }
+      private @Nullable Long groupIndex;
+      public @NonNull Builder setGroupIndex(@NonNull Long setterArg) {
+        this.groupIndex = setterArg;
+        return this;
+      }
+      private @Nullable Long renderIndex;
+      public @NonNull Builder setRenderIndex(@NonNull Long setterArg) {
+        this.renderIndex = setterArg;
+        return this;
+      }
+      public @NonNull GetEmbeddedSubtitlesMessage build() {
+        GetEmbeddedSubtitlesMessage pigeonReturn = new GetEmbeddedSubtitlesMessage();
+        pigeonReturn.setLanguage(language);
+        pigeonReturn.setLabel(label);
+        pigeonReturn.setTrackIndex(trackIndex);
+        pigeonReturn.setGroupIndex(groupIndex);
+        pigeonReturn.setRenderIndex(renderIndex);
+        return pigeonReturn;
+      }
+    }
+    @NonNull Map<String, Object> toMap() {
+      Map<String, Object> toMapResult = new HashMap<>();
+      toMapResult.put("language", language);
+      toMapResult.put("label", label);
+      toMapResult.put("trackIndex", trackIndex);
+      toMapResult.put("groupIndex", groupIndex);
+      toMapResult.put("renderIndex", renderIndex);
+      return toMapResult;
+    }
+    static @NonNull GetEmbeddedSubtitlesMessage fromMap(@NonNull Map<String, Object> map) {
+      GetEmbeddedSubtitlesMessage pigeonResult = new GetEmbeddedSubtitlesMessage();
+      Object language = map.get("language");
+      pigeonResult.setLanguage((String)language);
+      Object label = map.get("label");
+      pigeonResult.setLabel((String)label);
+      Object trackIndex = map.get("trackIndex");
+      pigeonResult.setTrackIndex((trackIndex == null) ? null : ((trackIndex instanceof Integer) ? (Integer)trackIndex : (Long)trackIndex));
+      Object groupIndex = map.get("groupIndex");
+      pigeonResult.setGroupIndex((groupIndex == null) ? null : ((groupIndex instanceof Integer) ? (Integer)groupIndex : (Long)groupIndex));
+      Object renderIndex = map.get("renderIndex");
+      pigeonResult.setRenderIndex((renderIndex == null) ? null : ((renderIndex instanceof Integer) ? (Integer)renderIndex : (Long)renderIndex));
+      return pigeonResult;
+    }
+  }
+
+  /** Generated class from Pigeon that represents data sent in messages. */
+  public static class SetEmbeddedSubtitlesMessage {
+    private @NonNull Long textureId;
+    public @NonNull Long getTextureId() { return textureId; }
+    public void setTextureId(@NonNull Long setterArg) {
+      if (setterArg == null) {
+        throw new IllegalStateException("Nonnull field \"textureId\" is null.");
+      }
+      this.textureId = setterArg;
+    }
+
+    private @Nullable String language;
+    public @Nullable String getLanguage() { return language; }
+    public void setLanguage(@Nullable String setterArg) {
+      this.language = setterArg;
+    }
+
+    private @Nullable String label;
+    public @Nullable String getLabel() { return label; }
+    public void setLabel(@Nullable String setterArg) {
+      this.label = setterArg;
+    }
+
+    private @Nullable Long trackIndex;
+    public @Nullable Long getTrackIndex() { return trackIndex; }
+    public void setTrackIndex(@Nullable Long setterArg) {
+      this.trackIndex = setterArg;
+    }
+
+    private @Nullable Long groupIndex;
+    public @Nullable Long getGroupIndex() { return groupIndex; }
+    public void setGroupIndex(@Nullable Long setterArg) {
+      this.groupIndex = setterArg;
+    }
+
+    private @Nullable Long renderIndex;
+    public @Nullable Long getRenderIndex() { return renderIndex; }
+    public void setRenderIndex(@Nullable Long setterArg) {
+      this.renderIndex = setterArg;
+    }
+
+    /** Constructor is private to enforce null safety; use Builder. */
+    private SetEmbeddedSubtitlesMessage() {}
+    public static class Builder {
+      private @Nullable Long textureId;
+      public @NonNull Builder setTextureId(@NonNull Long setterArg) {
+        this.textureId = setterArg;
+        return this;
+      }
+      private @Nullable String language;
+      public @NonNull Builder setLanguage(@Nullable String setterArg) {
+        this.language = setterArg;
+        return this;
+      }
+      private @Nullable String label;
+      public @NonNull Builder setLabel(@Nullable String setterArg) {
+        this.label = setterArg;
+        return this;
+      }
+      private @Nullable Long trackIndex;
+      public @NonNull Builder setTrackIndex(@Nullable Long setterArg) {
+        this.trackIndex = setterArg;
+        return this;
+      }
+      private @Nullable Long groupIndex;
+      public @NonNull Builder setGroupIndex(@Nullable Long setterArg) {
+        this.groupIndex = setterArg;
+        return this;
+      }
+      private @Nullable Long renderIndex;
+      public @NonNull Builder setRenderIndex(@Nullable Long setterArg) {
+        this.renderIndex = setterArg;
+        return this;
+      }
+      public @NonNull SetEmbeddedSubtitlesMessage build() {
+        SetEmbeddedSubtitlesMessage pigeonReturn = new SetEmbeddedSubtitlesMessage();
+        pigeonReturn.setTextureId(textureId);
+        pigeonReturn.setLanguage(language);
+        pigeonReturn.setLabel(label);
+        pigeonReturn.setTrackIndex(trackIndex);
+        pigeonReturn.setGroupIndex(groupIndex);
+        pigeonReturn.setRenderIndex(renderIndex);
+        return pigeonReturn;
+      }
+    }
+    @NonNull Map<String, Object> toMap() {
+      Map<String, Object> toMapResult = new HashMap<>();
+      toMapResult.put("textureId", textureId);
+      toMapResult.put("language", language);
+      toMapResult.put("label", label);
+      toMapResult.put("trackIndex", trackIndex);
+      toMapResult.put("groupIndex", groupIndex);
+      toMapResult.put("renderIndex", renderIndex);
+      return toMapResult;
+    }
+    static @NonNull SetEmbeddedSubtitlesMessage fromMap(@NonNull Map<String, Object> map) {
+      SetEmbeddedSubtitlesMessage pigeonResult = new SetEmbeddedSubtitlesMessage();
+      Object textureId = map.get("textureId");
+      pigeonResult.setTextureId((textureId == null) ? null : ((textureId instanceof Integer) ? (Integer)textureId : (Long)textureId));
+      Object language = map.get("language");
+      pigeonResult.setLanguage((String)language);
+      Object label = map.get("label");
+      pigeonResult.setLabel((String)label);
+      Object trackIndex = map.get("trackIndex");
+      pigeonResult.setTrackIndex((trackIndex == null) ? null : ((trackIndex instanceof Integer) ? (Integer)trackIndex : (Long)trackIndex));
+      Object groupIndex = map.get("groupIndex");
+      pigeonResult.setGroupIndex((groupIndex == null) ? null : ((groupIndex instanceof Integer) ? (Integer)groupIndex : (Long)groupIndex));
+      Object renderIndex = map.get("renderIndex");
+      pigeonResult.setRenderIndex((renderIndex == null) ? null : ((renderIndex instanceof Integer) ? (Integer)renderIndex : (Long)renderIndex));
+      return pigeonResult;
+    }
+  }
+
+  /** Generated class from Pigeon that represents data sent in messages. */
+  public static class EnterPictureInPictureMessage {
+    private @NonNull Long textureId;
+    public @NonNull Long getTextureId() { return textureId; }
+    public void setTextureId(@NonNull Long setterArg) {
+      if (setterArg == null) {
+        throw new IllegalStateException("Nonnull field \"textureId\" is null.");
+      }
+      this.textureId = setterArg;
+    }
+
+    private @NonNull Double width;
+    public @NonNull Double getWidth() { return width; }
+    public void setWidth(@NonNull Double setterArg) {
+      if (setterArg == null) {
+        throw new IllegalStateException("Nonnull field \"width\" is null.");
+      }
+      this.width = setterArg;
+    }
+
+    private @NonNull Double height;
+    public @NonNull Double getHeight() { return height; }
+    public void setHeight(@NonNull Double setterArg) {
+      if (setterArg == null) {
+        throw new IllegalStateException("Nonnull field \"height\" is null.");
+      }
+      this.height = setterArg;
+    }
+
+    /** Constructor is private to enforce null safety; use Builder. */
+    private EnterPictureInPictureMessage() {}
+    public static class Builder {
+      private @Nullable Long textureId;
+      public @NonNull Builder setTextureId(@NonNull Long setterArg) {
+        this.textureId = setterArg;
+        return this;
+      }
+      private @Nullable Double width;
+      public @NonNull Builder setWidth(@NonNull Double setterArg) {
+        this.width = setterArg;
+        return this;
+      }
+      private @Nullable Double height;
+      public @NonNull Builder setHeight(@NonNull Double setterArg) {
+        this.height = setterArg;
+        return this;
+      }
+      public @NonNull EnterPictureInPictureMessage build() {
+        EnterPictureInPictureMessage pigeonReturn = new EnterPictureInPictureMessage();
+        pigeonReturn.setTextureId(textureId);
+        pigeonReturn.setWidth(width);
+        pigeonReturn.setHeight(height);
+        return pigeonReturn;
+      }
+    }
+    @NonNull Map<String, Object> toMap() {
+      Map<String, Object> toMapResult = new HashMap<>();
+      toMapResult.put("textureId", textureId);
+      toMapResult.put("width", width);
+      toMapResult.put("height", height);
+      return toMapResult;
+    }
+    static @NonNull EnterPictureInPictureMessage fromMap(@NonNull Map<String, Object> map) {
+      EnterPictureInPictureMessage pigeonResult = new EnterPictureInPictureMessage();
+      Object textureId = map.get("textureId");
+      pigeonResult.setTextureId((textureId == null) ? null : ((textureId instanceof Integer) ? (Integer)textureId : (Long)textureId));
+      Object width = map.get("width");
+      pigeonResult.setWidth((Double)width);
+      Object height = map.get("height");
+      pigeonResult.setHeight((Double)height);
+      return pigeonResult;
+    }
+  }
   private static class AndroidVideoPlayerApiCodec extends StandardMessageCodec {
     public static final AndroidVideoPlayerApiCodec INSTANCE = new AndroidVideoPlayerApiCodec();
-
     private AndroidVideoPlayerApiCodec() {}
-
     @Override
     protected Object readValueOfType(byte type, ByteBuffer buffer) {
       switch (type) {
-        case (byte) 128:
+        case (byte)128:
           return CreateMessage.fromMap((Map<String, Object>) readValue(buffer));
 
-        case (byte) 129:
+        case (byte)129:
+          return EnterPictureInPictureMessage.fromMap((Map<String, Object>) readValue(buffer));
+
+        case (byte)130:
+          return GetEmbeddedSubtitlesMessage.fromMap((Map<String, Object>) readValue(buffer));
+
+        case (byte)131:
           return LoopingMessage.fromMap((Map<String, Object>) readValue(buffer));
 
-        case (byte) 130:
+        case (byte)132:
           return MixWithOthersMessage.fromMap((Map<String, Object>) readValue(buffer));
 
-        case (byte) 131:
+        case (byte)133:
           return PlaybackSpeedMessage.fromMap((Map<String, Object>) readValue(buffer));
 
-        case (byte) 132:
+        case (byte)134:
           return PositionMessage.fromMap((Map<String, Object>) readValue(buffer));
 
-        case (byte) 133:
+        case (byte)135:
+          return SetEmbeddedSubtitlesMessage.fromMap((Map<String, Object>) readValue(buffer));
+
+        case (byte)136:
           return TextureMessage.fromMap((Map<String, Object>) readValue(buffer));
 
-        case (byte) 134:
+        case (byte)137:
           return VolumeMessage.fromMap((Map<String, Object>) readValue(buffer));
 
         default:
           return super.readValueOfType(type, buffer);
+
       }
     }
-
     @Override
-    protected void writeValue(ByteArrayOutputStream stream, Object value) {
+    protected void writeValue(ByteArrayOutputStream stream, Object value)     {
       if (value instanceof CreateMessage) {
         stream.write(128);
         writeValue(stream, ((CreateMessage) value).toMap());
-      } else if (value instanceof LoopingMessage) {
+      } else
+      if (value instanceof EnterPictureInPictureMessage) {
         stream.write(129);
-        writeValue(stream, ((LoopingMessage) value).toMap());
-      } else if (value instanceof MixWithOthersMessage) {
+        writeValue(stream, ((EnterPictureInPictureMessage) value).toMap());
+      } else
+      if (value instanceof GetEmbeddedSubtitlesMessage) {
         stream.write(130);
-        writeValue(stream, ((MixWithOthersMessage) value).toMap());
-      } else if (value instanceof PlaybackSpeedMessage) {
+        writeValue(stream, ((GetEmbeddedSubtitlesMessage) value).toMap());
+      } else
+      if (value instanceof LoopingMessage) {
         stream.write(131);
-        writeValue(stream, ((PlaybackSpeedMessage) value).toMap());
-      } else if (value instanceof PositionMessage) {
+        writeValue(stream, ((LoopingMessage) value).toMap());
+      } else
+      if (value instanceof MixWithOthersMessage) {
         stream.write(132);
-        writeValue(stream, ((PositionMessage) value).toMap());
-      } else if (value instanceof TextureMessage) {
+        writeValue(stream, ((MixWithOthersMessage) value).toMap());
+      } else
+      if (value instanceof PlaybackSpeedMessage) {
         stream.write(133);
-        writeValue(stream, ((TextureMessage) value).toMap());
-      } else if (value instanceof VolumeMessage) {
+        writeValue(stream, ((PlaybackSpeedMessage) value).toMap());
+      } else
+      if (value instanceof PositionMessage) {
         stream.write(134);
+        writeValue(stream, ((PositionMessage) value).toMap());
+      } else
+      if (value instanceof SetEmbeddedSubtitlesMessage) {
+        stream.write(135);
+        writeValue(stream, ((SetEmbeddedSubtitlesMessage) value).toMap());
+      } else
+      if (value instanceof TextureMessage) {
+        stream.write(136);
+        writeValue(stream, ((TextureMessage) value).toMap());
+      } else
+      if (value instanceof VolumeMessage) {
+        stream.write(137);
         writeValue(stream, ((VolumeMessage) value).toMap());
-      } else {
+      } else
+{
         super.writeValue(stream, value);
       }
     }
   }
 
-  /** Generated interface from Pigeon that represents a handler of messages from Flutter. */
+  /** Generated interface from Pigeon that represents a handler of messages from Flutter.*/
   public interface AndroidVideoPlayerApi {
     void initialize();
 
@@ -645,6 +969,12 @@ public class Messages {
     void pause(@NonNull TextureMessage msg);
 
     void setMixWithOthers(@NonNull MixWithOthersMessage msg);
+
+    @NonNull List<GetEmbeddedSubtitlesMessage> getEmbeddedSubtitles(@NonNull TextureMessage msg);
+
+    void setEmbeddedSubtitles(@NonNull SetEmbeddedSubtitlesMessage msg);
+
+    void enterPictureInPicture(@NonNull EnterPictureInPictureMessage msg);
 
     /** The codec used by AndroidVideoPlayerApi. */
     static MessageCodec<Object> getCodec() {
@@ -905,27 +1235,96 @@ public class Messages {
       }
       {
         BasicMessageChannel<Object> channel =
-            new BasicMessageChannel<>(
-                binaryMessenger,
-                "dev.flutter.pigeon.AndroidVideoPlayerApi.setMixWithOthers",
-                getCodec());
+            new BasicMessageChannel<>(binaryMessenger, "dev.flutter.pigeon.AndroidVideoPlayerApi.setMixWithOthers", getCodec());
         if (api != null) {
-          channel.setMessageHandler(
-              (message, reply) -> {
-                Map<String, Object> wrapped = new HashMap<>();
-                try {
-                  ArrayList<Object> args = (ArrayList<Object>) message;
-                  MixWithOthersMessage msgArg = (MixWithOthersMessage) args.get(0);
-                  if (msgArg == null) {
-                    throw new NullPointerException("msgArg unexpectedly null.");
-                  }
-                  api.setMixWithOthers(msgArg);
-                  wrapped.put("result", null);
-                } catch (Error | RuntimeException exception) {
-                  wrapped.put("error", wrapError(exception));
-                }
-                reply.reply(wrapped);
-              });
+          channel.setMessageHandler((message, reply) -> {
+            Map<String, Object> wrapped = new HashMap<>();
+            try {
+              ArrayList<Object> args = (ArrayList<Object>)message;
+              MixWithOthersMessage msgArg = (MixWithOthersMessage)args.get(0);
+              if (msgArg == null) {
+                throw new NullPointerException("msgArg unexpectedly null.");
+              }
+              api.setMixWithOthers(msgArg);
+              wrapped.put("result", null);
+            }
+            catch (Error | RuntimeException exception) {
+              wrapped.put("error", wrapError(exception));
+            }
+            reply.reply(wrapped);
+          });
+        } else {
+          channel.setMessageHandler(null);
+        }
+      }
+      {
+        BasicMessageChannel<Object> channel =
+            new BasicMessageChannel<>(binaryMessenger, "dev.flutter.pigeon.AndroidVideoPlayerApi.getEmbeddedSubtitles", getCodec());
+        if (api != null) {
+          channel.setMessageHandler((message, reply) -> {
+            Map<String, Object> wrapped = new HashMap<>();
+            try {
+              ArrayList<Object> args = (ArrayList<Object>)message;
+              TextureMessage msgArg = (TextureMessage)args.get(0);
+              if (msgArg == null) {
+                throw new NullPointerException("msgArg unexpectedly null.");
+              }
+              List<GetEmbeddedSubtitlesMessage> output = api.getEmbeddedSubtitles(msgArg);
+              wrapped.put("result", output);
+            }
+            catch (Error | RuntimeException exception) {
+              wrapped.put("error", wrapError(exception));
+            }
+            reply.reply(wrapped);
+          });
+        } else {
+          channel.setMessageHandler(null);
+        }
+      }
+      {
+        BasicMessageChannel<Object> channel =
+            new BasicMessageChannel<>(binaryMessenger, "dev.flutter.pigeon.AndroidVideoPlayerApi.setEmbeddedSubtitles", getCodec());
+        if (api != null) {
+          channel.setMessageHandler((message, reply) -> {
+            Map<String, Object> wrapped = new HashMap<>();
+            try {
+              ArrayList<Object> args = (ArrayList<Object>)message;
+              SetEmbeddedSubtitlesMessage msgArg = (SetEmbeddedSubtitlesMessage)args.get(0);
+              if (msgArg == null) {
+                throw new NullPointerException("msgArg unexpectedly null.");
+              }
+              api.setEmbeddedSubtitles(msgArg);
+              wrapped.put("result", null);
+            }
+            catch (Error | RuntimeException exception) {
+              wrapped.put("error", wrapError(exception));
+            }
+            reply.reply(wrapped);
+          });
+        } else {
+          channel.setMessageHandler(null);
+        }
+      }
+      {
+        BasicMessageChannel<Object> channel =
+            new BasicMessageChannel<>(binaryMessenger, "dev.flutter.pigeon.AndroidVideoPlayerApi.enterPictureInPicture", getCodec());
+        if (api != null) {
+          channel.setMessageHandler((message, reply) -> {
+            Map<String, Object> wrapped = new HashMap<>();
+            try {
+              ArrayList<Object> args = (ArrayList<Object>)message;
+              EnterPictureInPictureMessage msgArg = (EnterPictureInPictureMessage)args.get(0);
+              if (msgArg == null) {
+                throw new NullPointerException("msgArg unexpectedly null.");
+              }
+              api.enterPictureInPicture(msgArg);
+              wrapped.put("result", null);
+            }
+            catch (Error | RuntimeException exception) {
+              wrapped.put("error", wrapError(exception));
+            }
+            reply.reply(wrapped);
+          });
         } else {
           channel.setMessageHandler(null);
         }
